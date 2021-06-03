@@ -77,6 +77,6 @@ public class NavigateToCatalogueSteps extends BaseTest {
 
     @After
     public void closeBrowser() {
-//        Browser.closeBrowser();
+        Browser.closeBrowser();
     }
 }

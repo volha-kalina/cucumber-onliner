@@ -1,5 +1,6 @@
 package onliner.pages;
 
+import framework.elements.Button;
 import org.openqa.selenium.By;
 
 public class MainPage extends BasePage {
@@ -11,6 +12,6 @@ public class MainPage extends BasePage {
     }
 
     public void navigateTo(String categoryName) {
-        baseElement.clickElement(By.xpath(CATEGORY_LINK.replace("CATEGORY_NAME", categoryName)));
+        new Button(By.xpath(CATEGORY_LINK.replace("CATEGORY_NAME", categoryName))).clickElement();
     }
 }

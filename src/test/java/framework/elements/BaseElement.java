@@ -12,9 +12,11 @@ public class BaseElement implements WebElement {
     protected WebElement webElement;
     private static final int MEDIUM_WAIT = 5;
     private static final int LONG_WAIT = 15;
+    private static By basePath = null;
 
     public BaseElement(By by) {
         this.webElement = getElement(by);
+        basePath = by;
     }
 
     /**
@@ -32,7 +34,6 @@ public class BaseElement implements WebElement {
      *
      */
     public void clickElement() {
-        waitElementBeClickable(this.webElement);
         this.webElement.click();
     }
 
@@ -49,6 +50,10 @@ public class BaseElement implements WebElement {
     public void waitElementBeClickable(WebElement webElement) {
         WebDriverWait wait = new WebDriverWait(Browser.getDriver(), LONG_WAIT);
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
+    }
+
+    public WebElement getBaseWebElement() {
+        return this.getElement(basePath);
     }
 
     /**
@@ -88,7 +93,7 @@ public class BaseElement implements WebElement {
     }
 
     public void sendKeys(CharSequence... keysToSend) {
-
+        this.webElement.sendKeys(keysToSend);
     }
 
     public void clear() {

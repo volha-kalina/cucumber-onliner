@@ -1,57 +1,50 @@
 package onliner.pages;
 
+import framework.elements.BaseElement;
+import framework.elements.CheckBox;
+import framework.elements.Input;
+import framework.elements.Select;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class CatalogMenu {
     private WebDriver driver;
     private Actions actions;
 
-    @FindBy(xpath = "//*[@class = \"schema-filter-control__item schema-filter__number-input schema-filter__number-input_price\" and @placeholder= \"от\"]")
-    private WebElement priceFromFilter;
-
-    @FindBy(xpath = "//div[@class = \"schema-filter-control schema-filter-control_input\"][2]/input[@class = \"schema-filter-control__item schema-filter__number-input schema-filter__number-input_price\"]")
-    private WebElement priceToFilter;
-
-    @FindBy(xpath = "//div[@class = \"schema-filter-control schema-filter-control_select\"][1]/select[@class = \"schema-filter-control__item\"]")
-    private WebElement diagonalFrom;
-
-    @FindBy(xpath = "//div[@class = \"schema-filter-control schema-filter-control_select\"][2]/select[@class = \"schema-filter-control__item\"]")
-    private WebElement diagonalTo;
+    private static Input priceFromFilter = new Input(By.xpath("//*[@class = \"schema-filter-control__item schema-filter__number-input schema-filter__number-input_price\" and @placeholder= \"от\"]"));
+    private static Input priceToFilter = new Input(By.xpath("//div[@class = \"schema-filter-control schema-filter-control_input\"][2]/input[@class = \"schema-filter-control__item schema-filter__number-input schema-filter__number-input_price\"]"));
+    private static Select diagonalFrom = new Select(By.xpath("//div[@class = \"schema-filter-control schema-filter-control_select\"][1]/select[@class = \"schema-filter-control__item\"]"));
+    private static Select diagonalTo = new Select(By.xpath("//div[@class = \"schema-filter-control schema-filter-control_select\"][2]/select[@class = \"schema-filter-control__item\"]"));
+    private static String filterXpath = "//*[@class=\"schema-filter__checkbox-text\" and contains(.,'FILTER_NAME')]";
 
     public CatalogMenu(WebDriver driver) {
-        PageFactory.initElements(driver, this);
         this.driver = driver;
         actions = new Actions(driver);
     }
 
-    public WebElement getFilterWebElementByName(String filterName) {
-        return driver.findElement(
-                By.xpath("//*[@class=\"schema-filter__checkbox-text\" and contains(.,'" + filterName + "')]")
-        );
+    public BaseElement getFilterWebElementByName(String filterName) {
+        return new BaseElement(By.xpath(filterXpath.replace("FILTER_NAME", filterName)));
     }
 
     public void findAndClickFilterByName(String name) {
-        WebElement filter = this.getFilterWebElementByName(name);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", filter);
-        filter.click();
+        BaseElement filter = this.getFilterWebElementByName(name);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", filter.getBaseWebElement());
+        filter.clickElement();
     }
 
     public void enterPrices(String priceFrom, String priceTo) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", priceFromFilter);
-        priceFromFilter.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", priceFromFilter.getBaseWebElement());
+        priceFromFilter.clickElement();
         priceFromFilter.sendKeys(priceFrom);
-        priceToFilter.click();
+        priceToFilter.clickElement();
         priceToFilter.sendKeys(priceTo);
     }
 
     public void enterDiagonals(String diagonalFrom, String diagonalTo) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", this.diagonalFrom);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", this.diagonalFrom.getBaseWebElement());
         this.diagonalFrom.sendKeys(diagonalFrom);
         this.diagonalTo.sendKeys(diagonalTo);
     }
