@@ -13,6 +13,10 @@
         <cucumber.version>6.10.4</cucumber.version>
         <junit.version>4.13.2</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <property>
+            <name>onliner</name>
+            <value>1.6.2</value>
+        </property>
     </properties>
 
     <dependencies>
